@@ -20,5 +20,6 @@ from .views import chat
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('login.urls')),
+    path('',include('rooms.urls')),
     path('chat',chat,name='chat'),
 ]
