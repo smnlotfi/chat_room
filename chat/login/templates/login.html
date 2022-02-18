@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="login-container">
+                <div class="login-container-img">
+                    <h1>Welcome to
+                        <span>codepen</span>
+                    </h1>
+                </div>
+                <div class="login-container-content">
+                    <form id="login_form" action="" class="login-form" method="POST">
+                     {% csrf_token %} 
+                        <h1>Login</h1>
+                        <h3 id="error"></h3>
+                        <p class="field">
+                            <label>Users name or Email</label>
+                            <input type="text" name="username" placeholder="user"/>
+                        </p>
+                        <p class="field">
+                            <label>Password</label>
+                            <input type="password" name="password" placeholder="password"/>
+                            <a href="">forget password?</a>
+                        </p>
+                        <button type="submit" class="submitBtn">Sign in</button>
+                        <div class="parting-line"><span>or</span></div>
+                        <div class="google-background">
+                            <div class="google-icon"></div>
+                            <p>Sign in with Google</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <script src="{% static 'js/jquery.js' %}"></script>
+            <script src="{% static 'js/custom.js' %}"></script>
+        </footer>
+    </body>
+</html>
