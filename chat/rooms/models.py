@@ -18,3 +18,15 @@ class room(models.Model):
 
     def get_all_room(self):
         return self.objects.all()
+
+
+
+
+class message(models.Model):
+    author=models.ForeignKey(user,on_delete=models.CASCADE)
+    related_group=models.ForeignKey(room,on_delete=models.CASCADE)
+    message_send_time=models.DateField(auto_now=True)
+    content=models.CharField(max_length=333)
+
+    def __str__(self):
+        return self.author.username
