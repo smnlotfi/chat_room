@@ -2,210 +2,434 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'css/chat.css' %}">
-    </head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+      </head>
 
 
     <body>
-        <div class="container clearfix">
+      <ul id="notif"></ul>
+        <div class="home-page__content messages-page">
+            <div class="container-fluid h-100">
+              <div class="row px-0 h-100">
+                <!-- start message list section  -->
+                <div class="col-12 col-md-4 col-lg-5 col-xl-3 px-0 messages-page__list-scroll">
           
-            <div class="people-list" id="people-list">
-              <div class="search">
-                <input type="text" placeholder="search" />
-                <i class="fa fa-search"></i>
-              </div>
-              <h3>groups</h3>
-              <ul class="list">
-                {% for room_name in rooms_name %}
-                  <li class="clearfix">
-                    <a target="{{room_name}}" class="link_room" href="">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
-                      <div class="about">
-                        <div class="name">{{room_name}}</div>
-                        <div class="status">
-                          <i class="fa fa-circle online"></i> online
+                  <div class="messages-page__header mb-0 px-4 pt-3 pb-3">
+                    <span class="messages-page__title">Chats</span>
+                    <div class="messages-page__dark-mode-toogler">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--dark-mode" viewBox="0 0 49.7 49.7">
+                        <path d="M25.4,49.7A25.6,25.6,0,0,1,1.3,32.3,25.6,25.6,0,0,1,17.3.1a2,2,0,0,1,2.1.5,2.2,2.2,0,0,1,.5,2.1,19.9,19.9,0,0,0-1.2,6.8A21,21,0,0,0,25,24.7,21,21,0,0,0,40.2,31h0a20.9,20.9,0,0,0,6.9-1.2,2,2,0,0,1,2.5,2.5,25.8,25.8,0,0,1-16,16.1A28.7,28.7,0,0,1,25.4,49.7ZM15,5.5A21.4,21.4,0,0,0,5.1,31.1,21.5,21.5,0,0,0,15.9,43.4a21.2,21.2,0,0,0,28.3-8.8,17.5,17.5,0,0,1-4,.4h0a24.9,24.9,0,0,1-18-7.5,24.9,24.9,0,0,1-7.5-18A26.9,26.9,0,0,1,15,5.5Z" fill="#f68b3c" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="messages-page__search mb-0 px-3 pb-3">
+                    <div class="custom-form__search-wrapper">
+                      <input type="text" class="form-control custom-form" id="search" placeholder="Rechercher un message, un utilisateur…" autocomplete="off">
+                      <button type="submit" class="custom-form__search-submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--search" viewBox="0 0 46.6 46.6">
+                          <path d="M46.1,43.2l-9-8.9a20.9,20.9,0,1,0-2.8,2.8l8.9,9a1.9,1.9,0,0,0,1.4.5,2,2,0,0,0,1.5-.5A2.3,2.3,0,0,0,46.1,43.2ZM4,21a17,17,0,1,1,33.9,0A17.1,17.1,0,0,1,33,32.9h-.1A17,17,0,0,1,4,21Z" fill="#f68b3c" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <h5>Groups</h5>
+                  <ul id="group_list" class="messages-page__list pb-5 px-1 px-md-3">
+                      
+                    {% for room_name in rooms_name %}
+                    <li class="messaging-member messaging-member--new messaging-member--online">
+                        <a target="{{room_name}}" class="link_room" href="">
+                            <div class="messaging-member__wrapper">
+                            <div class="messaging-member__avatar">
+                              <img src="https://randomuser.me/api/portraits/thumb/men/74.jpg" alt="Bessie Cooper" loading="lazy">
+                              <div class="user-status"></div>
+                            </div>
+              
+                            <span class="messaging-member__name name">{{room_name}}</span>
+                            <span class="messaging-member__message">Yes, I need your help with the project, it need it done by tomorrow 😫</span>
+                          </div>
+                        </a>
+                    </li>
+                  {% endfor %}
+                   
+                    <hr>
+                    <h5>settings</h5>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create Groupe</button>                    
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create New Room</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form id="create_room" method="POST">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <span id="msg"></span></br>
+                                <label for="recipient-name" class="col-form-label">Room Name</label>
+                                <input name="RoomName" type="text" class="form-control" id="recipient-name">
+                              </div>
+                            <button  type="submit" class="btn btn-primary">creat room</button>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
                         </div>
                       </div>
-                    </a>
-                  </li>
-                {% endfor %}
-                <hr>
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Vincent Porter</div>
-                    <div class="status">
-                      <i class="fa fa-circle online"></i> online
                     </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_02.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Aiden Chavez</div>
-                    <div class="status">
-                      <i class="fa fa-circle offline"></i> left 7 mins ago
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_03.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Mike Thomas</div>
-                    <div class="status">
-                      <i class="fa fa-circle online"></i> online
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_04.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Erica Hughes</div>
-                    <div class="status">
-                      <i class="fa fa-circle online"></i> online
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_05.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Ginger Johnston</div>
-                    <div class="status">
-                      <i class="fa fa-circle online"></i> online
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_06.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Tracy Carpenter</div>
-                    <div class="status">
-                      <i class="fa fa-circle offline"></i> left 30 mins ago
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_07.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Christian Kelly</div>
-                    <div class="status">
-                      <i class="fa fa-circle offline"></i> left 10 hours ago
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_08.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Monica Ward</div>
-                    <div class="status">
-                      <i class="fa fa-circle online"></i> online
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_09.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Dean Henry</div>
-                    <div class="status">
-                      <i class="fa fa-circle offline"></i> offline since Oct 28
-                    </div>
-                  </div>
-                </li>
-                
-                <li class="clearfix">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_10.jpg" alt="avatar" />
-                  <div class="about">
-                    <div class="name">Peyton Mckinney</div>
-                    <div class="status">
-                      <i class="fa fa-circle online"></i> online
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            
-            <div class="chat">
-              <div class="chat-header clearfix">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar" />
-                
-                <div class="chat-about">
-                  <div class="chat-with"></div>
-                  <div class="members"></div>
-                  <div class="chat-num-messages"></div>
-                </div>
-                <i class="fa fa-star"></i>
-              </div> <!-- end chat-header -->
-              
-              <div  class="chat-history">
-                <ul class="chat-message-list">
-                  
-                  
-                  {% comment %} <li>
-                    <div class="message-data">
-                      <span class="message-data-name">message_sender<i class="fa fa-circle online"></i> Vincent</span>
-                      <span class="message-data-time">message_time</span>
-                    </div>
-                    <div class="message my-message">
-                      message_content                    </div>
-                  </li> {% endcomment %}
-                  
-                  
                 </ul>
-                
-              </div> <!-- end chat-history -->
-              
-              <div class="chat-message clearfix">
-                <textarea name="message-to-send" id="send_message" placeholder ="Type your message" value="sdsad" rows="3"></textarea>
-                        
-                <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
-                <i class="fa fa-file-image-o"></i>
-                
-                <button id="chat-message-submit">Send</button>
-        
-              </div> <!-- end chat-message -->
-              
-            </div> <!-- end chat -->
-            
-          </div> <!-- end container -->
-        
-        <script id="message-template" type="text/x-handlebars-template">
-          <li class="clearfix">
-            <div class="message-data align-right">
-              <span class="message-data-time" >{{time}}, Today</span> &nbsp; &nbsp;
-              <span class="message-data-name" >Olia</span> <i class="fa fa-circle me"></i>
+                </div>
+                <!-- end message list section  -->
+                <!-- start content section  -->
+                <div class="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1">
+                  <div class="chat__container">
+                    <div class="chat__wrapper py-2 pt-mb-2 pb-md-3">
+                      <div class="chat__messaging messaging-member--online pb-2 pb-md-2 pl-2 pl-md-4 pr-2">
+                        <div class="chat__previous d-flex d-md-none">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--previous" viewBox="0 0 45.5 30.4">
+                            <path d="M43.5,13.1H7l9.7-9.6A2.1,2.1,0,1,0,13.8.6L.9,13.5h0L.3,14v.6c0,.1-.1.1-.1.2v.4a2,2,0,0,0,.6,1.5l.3.3L13.8,29.8a2.1,2.1,0,1,0,2.9-2.9L7,17.2H43.5a2,2,0,0,0,2-2A2.1,2.1,0,0,0,43.5,13.1Z" fill="#f68b3c" />
+                          </svg>
+                        </div>
+                        <div class="chat__notification d-flex d-md-none chat__notification--new">
+                          <span>1</span>
+                        </div>
+                        <div class="chat__infos pl-2 pl-md-0">
+                          <div class="chat-member__wrapper" data-online="true">
+                            <div class="chat-member__avatar">
+                              <img src="https://randomuser.me/api/portraits/thumb/women/56.jpg" alt="Jenny Smith" loading="lazy">
+                              <div class="user-status user-status--large"></div>
+                            </div>
+                            <div class="chat-member__details">
+                              <span class="chat-member__name chat-with"></span>
+                              <span class="chat-member__status">Online</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="chat__actions mr-2 ">
+                          <ul class="m-0">
+                            <li style="display: none" class="add_members"></li>
+                            <li>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" viewBox="0 0 48 48">
+                                <path d="M38.4,48c-2.1,0-5.1-.8-9.5-3.2a62.9,62.9,0,0,1-14.6-11A61.7,61.7,0,0,1,3.2,19C-.9,11.8-.3,8.5.7,6.4A9.7,9.7,0,0,1,4.8,2,21.1,21.1,0,0,1,7.8.4h.3c1.8-.7,3-.3,4.9,1.5h.1a40.1,40.1,0,0,1,5.4,8.2c1.3,2.6,1.6,4.3-.2,6.9l-.5.6c-.8,1-.8,1.2-.8,1.6s1.9,3.4,5.2,6.7S28,30.8,28.8,31s.6,0,1.6-.8l.7-.4c2.5-1.9,4.2-1.6,6.8-.3A40.6,40.6,0,0,1,46.1,35h.1c1.8,1.9,2.2,3.1,1.5,4.9v.2h0a21.1,21.1,0,0,1-1.6,3,10,10,0,0,1-4.3,4.1A7.7,7.7,0,0,1,38.4,48ZM9.5,4.1H9.2L6.9,5.4H6.8A6.3,6.3,0,0,0,4.3,8.1c-.3.7-1.2,2.6,2.4,9A58.9,58.9,0,0,0,17.1,30.9,58.2,58.2,0,0,0,30.9,41.3c6.4,3.6,8.4,2.7,9.1,2.4a6.7,6.7,0,0,0,2.5-2.5.1.1,0,0,0,.1-.1c.5-.8.9-1.6,1.3-2.4v-.2l-.5-.6a35.4,35.4,0,0,0-7.3-4.8c-1.7-.8-1.8-.8-2.7-.1l-.6.4A5.3,5.3,0,0,1,28,34.9c-2.9-.6-7.4-4.9-8.7-6.2s-5.6-5.8-6.2-8.7.6-3.6,1.5-4.8l.4-.6c.7-.9.8-1-.1-2.7a35.4,35.4,0,0,0-4.8-7.3Z" fill="#f68b3c" />
+                              </svg>
+                            </li>
+                            <li>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" viewBox="0 0 46.8 47.4">
+                                <path d="M35.8,47.4H11a11,11,0,0,1-11-11V11.6A11,11,0,0,1,11,.6h8.8a2,2,0,1,1,0,4H11a7,7,0,0,0-7,7V36.4a7,7,0,0,0,7,7H35.8a7,7,0,0,0,7-7v-9a2,2,0,1,1,4,0v9A11,11,0,0,1,35.8,47.4Z" fill="#f68b3c" />
+                                <path d="M36.6,20.4A10.2,10.2,0,1,1,46.8,10.2,10.2,10.2,0,0,1,36.6,20.4ZM36.6,4a6.2,6.2,0,1,0,6.2,6.2A6.2,6.2,0,0,0,36.6,4Z" fill="#f68b3c" />
+                              </svg>
+                            </li>
+                            <li class="chat__details d-flex d-xl-none">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" viewBox="0 0 42.2 11.1">
+                                <g>
+                                  <circle cx="5.6" cy="5.6" r="5.6" fill="#d87232" />
+                                  <circle cx="21.1" cy="5.6" r="5.6" fill="#d87232" />
+                                  <circle cx="36.6" cy="5.6" r="5.6" fill="#d87232" />
+                                </g>
+                              </svg>
+                              
+                          </ul>
+          
+                        </div>
+                      </div>
+                      <div class="chat__content pt-4 px-3">
+                        <ul class="chat__list-messages">
+                        </ul>
+                      </div>
+                      <div class="chat__send-container px-2 px-md-3 pt-1 pt-md-3">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end content section  -->
+                <!-- start infos section  -->
+                <div class="col-12 col-md-5 col-lg-4 col-xl-3 px-4 px-sm-5 px-lg-4 user-profile">
+                  <div class="user-profile__close d-flex d-xl-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" viewBox="0 0 38.8 38.9">
+                      <g>
+                        <path d="M2,38.9a1.9,1.9,0,0,1-1.4-.5,2.1,2.1,0,0,1,0-2.9L35.4.6a1.9,1.9,0,0,1,2.8,0,1.9,1.9,0,0,1,0,2.8L3.4,38.4A1.9,1.9,0,0,1,2,38.9Z" fill="#d87232" />
+                        <path d="M36.8,38.9a1.9,1.9,0,0,1-1.4-.5L.6,3.4A1.9,1.9,0,0,1,.6.6,1.9,1.9,0,0,1,3.4.6L38.2,35.5a2.1,2.1,0,0,1,0,2.9A1.9,1.9,0,0,1,36.8,38.9Z" fill="#d87232" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="user-profile__wrapper">
+                    <div class="user-profile__avatar">
+                      <img src="https://randomuser.me/api/portraits/women/56.jpg" alt="Jenny Smith" loading="lazy">
+                    </div>
+                    <div class="user-profile__details mt-1">
+                      <span class="user-profile__name">Jenny Smith</span>
+                      <span class="user-profile__phone">(025) 015-234-567</span>
+                      <span class="user-profile__location">New York, United States</span>
+                    </div>
+                    <div class="user-profile__description">
+                      <p>Fly me to the moon 🌙 If you feel like your life is a routine, step back and take a deep breath.</p>
+                    </div>
+                    <div class="user-profile__learning mt-4">
+                      <span class="user-profile__label">Social Medias</span>
+                      <ul class="user-profile__tags user-profile__tags--primary mt-2">
+                        <li><a href="https://www.instagram.com/tiantsoa_sh/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.linkedin.com/in/tiantsoa-rabemananjara-254655152/" target="_blank">Linkedin</a></li>
+                        <li><a href="https://codepen.io/tiantsoa" target="_blank">Codepen</a></li>
+                      </ul>
+                    </div>
+                    <div class="user-profile__hobbies">
+                      <span class="user-profile__label">Activities</span>
+                      <ul class="user-profile__tags user-profile__tags--secondary mt-2">
+                        <li>Biking</li>
+                        <li>Cooking</li>
+                        <li>Traveling</li>
+                        <li>Grahic design</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- end infos section  -->
+
+                <!-- start add_members section  -->
+
+                <div class="add_member_box col-12 col-md-5 col-lg-4 col-xl-3 px-4 px-sm-5 px-lg-4">
+                  <div class="add_memberclose_icon d-flex d-xl-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" viewBox="0 0 38.8 38.9">
+                      <g>
+                        <path d="M2,38.9a1.9,1.9,0,0,1-1.4-.5,2.1,2.1,0,0,1,0-2.9L35.4.6a1.9,1.9,0,0,1,2.8,0,1.9,1.9,0,0,1,0,2.8L3.4,38.4A1.9,1.9,0,0,1,2,38.9Z" fill="#d87232" />
+                        <path d="M36.8,38.9a1.9,1.9,0,0,1-1.4-.5L.6,3.4A1.9,1.9,0,0,1,.6.6,1.9,1.9,0,0,1,3.4.6L38.2,35.5a2.1,2.1,0,0,1,0,2.9A1.9,1.9,0,0,1,36.8,38.9Z" fill="#d87232" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="messages-page__search mb-0 px-3 pb-3">
+                    <div style="margin-top:60px" class="custom-form__search-wrapper">
+                      <input type="text" class="form-control custom-form" id="search" placeholder="Rechercher un message, un utilisateur…" autocomplete="off">
+                      <button type="submit" class="custom-form__search-submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--search" viewBox="0 0 46.6 46.6">
+                          <path d="M46.1,43.2l-9-8.9a20.9,20.9,0,1,0-2.8,2.8l8.9,9a1.9,1.9,0,0,0,1.4.5,2,2,0,0,0,1.5-.5A2.3,2.3,0,0,0,46.1,43.2ZM4,21a17,17,0,1,1,33.9,0A17.1,17.1,0,0,1,33,32.9h-.1A17,17,0,0,1,4,21Z" fill="#f68b3c"></path>
+                        </svg>
+                      </button>
+                    </div> 
+                  <div class="users_list row">
+                  </div>
+                  </div>
+                </div>
+
+                <!-- end add_members section  -->
+
+              </div>
             </div>
-            <div class="message other-message float-right">
-              {{messageOutput}}
-            </div>
-          </li>
-        </script>
-        
-        <script id="message-response-template" type="text/x-handlebars-template">
-          <li>
-            <div class="message-data">
-              <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-              <span class="message-data-time">{{time}}, Today</span>
-            </div>
-            <div class="message my-message">
-              {{response}}
-            </div>
-          </li>
-        </script>
+          </div>
         
         <footer>
             <script src="{% static 'js/jquery.js' %}"></script>
             <script src="{% static 'js/custom.js' %}"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>            
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script>
+          $("body").on("click", ".link_room", function(e){
+              e.preventDefault()
+              $('.chat__list-messages').html('')
+              target=$(this).attr('target') 
+              $('.chat__send-container').html('<div class="custom-form__send-wrapper"><input type="text" class="form-control custom-form" id="message" placeholder="Ecrivez un message …" autocomplete="off"><div class="custom-form__send-img"><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--send-img" viewBox="0 0 45.7 45.7"><path d="M6.6,45.7A6.7,6.7,0,0,1,0,39.1V6.6A6.7,6.7,0,0,1,6.6,0H39.1a6.7,6.7,0,0,1,6.6,6.6V39.1h0a6.7,6.7,0,0,1-6.6,6.6ZM39,4H6.6A2.6,2.6,0,0,0,4,6.6V39.1a2.6,2.6,0,0,0,2.6,2.6H39.1a2.6,2.6,0,0,0,2.6-2.6V6.6A2.7,2.7,0,0,0,39,4Zm4.7,35.1Zm-4.6-.4H6.6a2.1,2.1,0,0,1-1.8-1.1,2,2,0,0,1,.3-2.1l8.1-10.4a1.8,1.8,0,0,1,1.5-.8,2.4,2.4,0,0,1,1.6.7l4.2,5.1,6.6-8.5a1.8,1.8,0,0,1,1.6-.8,1.8,1.8,0,0,1,1.5.8L40.7,35.5a2,2,0,0,1,.1,2.1A1.8,1.8,0,0,1,39.1,38.7Zm-17.2-4H35.1l-6.5-8.6-6.5,8.4C22,34.6,22,34.7,21.9,34.7Zm-11.2,0H19l-4.2-5.1Z" fill="#f68b3c" /></svg></div><div class="custom-form__send-emoji"><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--send-emoji" viewBox="0 0 46.2 46.2"><path d="M23.1,0A23.1,23.1,0,1,0,46.2,23.1,23.1,23.1,0,0,0,23.1,0Zm0,41.6A18.5,18.5,0,1,1,41.6,23.1,18.5,18.5,0,0,1,23.1,41.6Zm8.1-20.8a3.5,3.5,0,0,0,3.5-3.5,3.5,3.5,0,0,0-7,0,3.5,3.5,0,0,0,3.5,3.5ZM15,20.8a3.5,3.5,0,0,0,3.5-3.5A3.5,3.5,0,0,0,15,13.9a3.4,3.4,0,0,0-3.4,3.4A3.5,3.5,0,0,0,15,20.8Zm8.1,15a12.6,12.6,0,0,0,10.5-5.5,1.7,1.7,0,0,0-1.3-2.6H14a1.7,1.7,0,0,0-1.4,2.6A12.9,12.9,0,0,0,23.1,35.8Z" fill="#f68b3c" /></svg></div><button type="submit" class="custom-form__send-submit"><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--send" viewBox="0 0 45.6 45.6"><g><path d="M20.7,26.7a1.4,1.4,0,0,1-1.2-.6,1.6,1.6,0,0,1,0-2.4L42.6.5a1.8,1.8,0,0,1,2.5,0,1.8,1.8,0,0,1,0,2.5L21.9,26.1A1.6,1.6,0,0,1,20.7,26.7Z" fill="#d87232" /><path d="M29.1,45.6a1.8,1.8,0,0,1-1.6-1L19.4,26.2,1,18.1a1.9,1.9,0,0,1-1-1.7,1.8,1.8,0,0,1,1.2-1.6L43.3.1a1.7,1.7,0,0,1,1.8.4,1.7,1.7,0,0,1,.4,1.8L30.8,44.4a1.8,1.8,0,0,1-1.6,1.2ZM6.5,16.7l14.9,6.6a2,2,0,0,1,.9.9l6.6,14.9L41,4.6Z" fill="#d87232" /></g></svg></button></div>')     
+              var current_user='{{username}}'
+              $('.chat-with').html(target)
+
+              const chatSocket = new WebSocket(
+                'ws://'
+                + window.location.host
+                + '/ws/chat/'
+                + target
+                + '/'
+            );
         
+            chatSocket.onopen=function(e){
+              var data={
+                'command':'chat_open',
+                'room_name':target,
+                'username':'{{request.user.username}}'
+              }
+              send_message(chatSocket,data)
+            }
+
+            
+
+            chatSocket.onmessage = function(e) {
+              const databox = JSON.parse(e.data);
+              const command=databox.message.command
+              const data=databox.message.data
+              const room_admin=databox.message.room_admin
+              const users=databox.message.users
+              const members=databox.message.members              
+              if(command=='chat_open'){  
+                $('.users_list').html('')
+                if(room_admin=='{{request.user.username}}'){
+                  $('.add_members').css('display','block')
+                  $('.add_members').html('<a class="add_member target="'+target+'"><i style="zoom:5.5" class="fa-solid fa-square-plus"></i></a>')
+                  for(i=users.length-1;i>=0;i--){
+                      if(members.length!=0){
+                        for(j=members.length-1;j>=0;j--){
+                          if(members[j].username==users[i].username){
+                            $('.users_list').append('<div class="col-md-4"><div class="add_member__avatar"><img src="https://randomuser.me/api/portraits/women/56.jpg" alt="Jenny Smith" loading="lazy"></div><div class="user-profile__details mt-1"><span class="add_member_profile_name">'+users[i].username+'</span><button id="remove_'+users[i].username+'" mission="remove" class="addremove_member_button btn btn-danger btn-sm" target="'+target+'" user="'+users[i].username+'" type="button">remove</button></div></div>')
+                            }
+                          else{
+                            $('.users_list').append('<div class="col-md-4"><div class="add_member__avatar"><img src="https://randomuser.me/api/portraits/women/56.jpg" alt="Jenny Smith" loading="lazy"></div><div class="user-profile__details mt-1"><span class="add_member_profile_name">'+users[i].username+'</span><button id="add_'+users[i].username+'"    mission="add" class="addremove_member_button  btn btn-primary btn-sm" target="'+target+'" user="'+users[i].username+'" type="button">add to group</button></div></div>')
+                            }
+                       } 
+                      }
+                      else{
+                        $('.users_list').append('<div class="col-md-4"><div class="add_member__avatar"><img src="https://randomuser.me/api/portraits/women/56.jpg" alt="Jenny Smith" loading="lazy"></div><div class="user-profile__details mt-1"><span class="add_member_profile_name">'+users[i].username+'</span><button  id="add_'+users[i].username+'" mission="add" class="addremove_member_button  btn btn-primary btn-sm" target="'+target+'" user="'+users[i].username+'" type="button">add to group</button></div></div>')
+                      }  
+                    }
+                  }
+                else{
+                  $('.add_members').css('display','none')
+                  $('.add_member').remove()
+                  }
+                for(i=data.length-1;i>=0;i--){
+                  if(data[i].__str__==current_user){
+                    $('.chat__list-messages').append('<li><div class="chat__time">'+ data[i].message_send_time + data[i].__str__ +'</div><div class="chat__bubble chat__bubble--me">'+ data[i].content +'</div></li>')
+                  }
+                  else{
+                    $('.chat__list-messages').append('<li><div class="chat__time">'+ data[i].message_send_time + data[i].__str__ +'</div><div class="chat__bubble chat__bubble--you">'+ data[i].content +'</div></li>')
+                  }
+                }
+              }
+
+
+
+
+              else if(command=='addremove_members'){
+                const result=databox.message.result.result
+                const elementid=databox.message.elementid
+                const room=databox.message.room
+                const user=databox.message.user
+                let currentelement=$('#'+elementid)
+                if(result=='remove'){
+                   currentelement.attr('mission','add')
+                   currentelement.html('add')
+                   currentelement.removeClass('btn-danger')
+                   currentelement.addClass('btn-primary')
+                   
+                 }
+                else{
+                   currentelement.attr('mission','remove')
+                   currentelement.removeClass('btn-primary')
+                   currentelement.html('remove')
+                   currentelement.addClass('btn-danger')
+                   
+
+                 }
+
+              }
+
+
+
+
+
+              else{
+                let group_command=databox.message.message.command
+                let group_data=databox.message.message.data
+                if(group_command=='new_message'){
+                  if(group_data.__str__==current_user){
+                    $('.chat__list-messages').append('<li><div class="chat__time">'+ group_data.message_send_time +  group_data.__str__  +'</div><div class="chat__bubble chat__bubble--me">'+group_data.content+'</div></li>')                    
+                }
+                  else{
+                      $('.chat__list-messages').append('<li><div class="chat__time">'+ group_data.message_send_time +  group_data.__str__  +'</div><div class="chat__bubble chat__bubble--you">'+group_data.content+'</div></li>')
+                    }
+                }
+              }     
+            };
+
+              
+              
+              $('.custom-form__send-submit').click(function(e){   
+                var message=$('#message').val()
+                data={
+                  'command':'send_message',
+                  'room_name':target,
+                  'message':message,
+                  'author':current_user
+                }
+                send_message(chatSocket,data)
+                $('#send_message').val('')
+              })
+
+
+              if(allow==1){
+                $("body").on("click", ".addremove_member_button", function(e){
+                  let currentelement=$(this)
+                  let elementid=currentelement.attr('id')
+                  let user=currentelement.attr('user')
+                  let room=currentelement.attr('target')
+                  let mission=currentelement.attr('mission')
+                  if(mission=='add'){
+                    mission='add'
+                  }
+                  else{
+                    mission='remove'
+                  }
+                  newdata={
+                    'command':'addremove_members',
+                    'username':user,
+                    'room':room,
+                    'mission':mission,
+                    'elementid':elementid,
+                    'userdone':'{{request.user.username}}',
+                  }
+                  send_message(chatSocket,newdata)
+                  send_message(general,newdata)
+                })
+              }
+              allow=0
+          })
+
+          </script>
+          <script>
+            const general = new WebSocket(
+  'ws://'
+  + window.location.host
+  + '/ws/public/'
+  + 'global'
+  + '/'
+);
+general.onopen=function(e){
+}
+
+
+general.onmessage = function(e) {
+    const databox = JSON.parse(e.data).message;
+    const command=databox.message.command
+    if(command=='addremove_members'){
+      const elementid=databox.message.elementid
+      const room=databox.message.room
+      const user=databox.message.username
+      const currentuser='{{request.user.username}}'
+      const userdone=databox.message.userdone
+      const result=databox.message.mission
+      if(user==currentuser){
+        if(result=='remove'){
+          $('#notif').prepend('<li class=" new_notif notif messaging-member messaging-member--new messaging-member--online"><span>'+userdone+' remove you of '+room+' group</span></li>')
+          $("[target="+room+"]").remove()
+        }
+        else if(result=='add'){
+          $('#notif').append('<li class="new_notif notif messaging-member messaging-member--new messaging-member--online"><span> '+userdone+' add you to '+room+' group</span></li>')
+          $('#group_list').prepend('<li class="messaging-member messaging-member--new messaging-member--online"><a target="'+room+'" class="link_room" href=""><div class="messaging-member__wrapper"><div class="messaging-member__avatar"><img src="https://randomuser.me/api/portraits/thumb/men/74.jpg" alt="Bessie Cooper" loading="lazy"><div class="user-status"></div></div><span class="messaging-member__name name">'+room+'</span><span class="messaging-member__message">Yes, I need your help with the project, it need it done by tomorrow 😫</span></div></a></li>')
+          
+        }
+        setTimeout(
+            function() 
+            {
+            $('.new_notif').remove()
+            }, 5000);
+      }
+      
+    }
+}
+          </script>
           </footer>
     </body>
 </html>

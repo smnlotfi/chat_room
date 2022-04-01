@@ -13,6 +13,7 @@ user=get_user_model()
 @login_required(login_url='/')
 def chat(request):
     rooms_name=[]
+    username=request.user.username
     rooms=room.get_all_room(room)
     for chat_room in rooms:
         members=user.objects.filter(room=chat_room)
@@ -21,6 +22,7 @@ def chat(request):
                 rooms_name.append(chat_room.name)
      
     context={
-        'rooms_name':rooms_name
+        'rooms_name':rooms_name,
+        'username':username
     }
     return render(request,'chat.html',context)

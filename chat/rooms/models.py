@@ -1,4 +1,3 @@
-from venv import create
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -10,7 +9,8 @@ user=get_user_model()
 class room(models.Model):
     name=models.CharField(max_length=50)
     create_time=models.TimeField(auto_now=True)
-    members=models.ManyToManyField(user,blank=True,null=True)
+    members=models.ManyToManyField(user)
+    admin=models.CharField(max_length=50,blank=True,null=True)
 
 
     def __str__(self):
