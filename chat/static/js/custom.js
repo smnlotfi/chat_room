@@ -145,6 +145,52 @@ $('#create_room').submit(function(e){
 
 
 // users search
-$('#search').keyup(function(){
+$("body").on("keydown", "#search_members", function(e){
+  let keyword=$(this).val()
+  let room=$(this).attr('target')
+  let currentuser=$(this).attr('currentuser')
+  if(keyword==''){
+    $('.members_search_result').html('')
+  }
+  else{
+      $.ajax({
+    type:'GET',
+    data:{
+      'keyword':keyword,
+      'room':room,
+      'currentuser':currentuser
+    },
+    url:'searchmember',
+    success:function(res){
+      result=res.data
+      let members=result[0]
+      let users=result[1]
+      if(users.length==0){
+        $('.members_search_result').html('user not found')
+      }
+      else{
+        $('.members_search_result').html('')
+        for(i=users.length-1;i>=0;i--){
+          if(members.length==0){
+            $('.members_search_result').append('<li class="searchli"><img class="searchimg" src="https://randomuser.me/api/portraits/thumb/men/74.jpg" alt="Bessie Cooper" loading="lazy"><span>'+users[i]+'</span>|<button id="add_'+users[i]+'"    mission="add" class="addremove_member_button  btn btn-primary btn-sm" target="'+room+'" user="'+users[i]+'" type="button">add</button></li>')
 
+          }
+          for(j=members.length-1;j>=0;j--){
+            if(users[i]==members[j]){
+              $('.members_search_result').append('<li class="searchli"><img class="searchimg" src="https://randomuser.me/api/portraits/thumb/men/74.jpg" alt="Bessie Cooper" loading="lazy"><span>'+users[i]+'</span>|<button id="remove_'+users[i]+'" mission="remove" class="addremove_member_button btn btn-danger btn-sm" target="'+room+'" user="'+users[i]+'" type="button">remove</button></li>')
+              
+            }
+            else if(users[i]!=members[j]){
+              $('.members_search_result').append('<li class="searchli"><img class="searchimg" src="https://randomuser.me/api/portraits/thumb/men/74.jpg" alt="Bessie Cooper" loading="lazy"><span>'+users[i]+'</span>|<button id="add_'+users[i]+'"    mission="add" class="addremove_member_button  btn btn-primary btn-sm" target="'+room+'" user="'+users[i]+'" type="button">add</button></li>')
+
+            }
+          }
+        }
+      }
+    },
+    error:function(){
+      console.log('error in connection')
+    }
+  })
+  }
 })
